@@ -9,7 +9,7 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class GithubPayloadService {
 
-    // You can use RestTemplate to send HTTP requests if needed
+
 //    private final RestTemplate restTemplate;
 //
 //    @Autowired
