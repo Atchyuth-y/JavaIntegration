@@ -2,6 +2,7 @@ package com.example.ServiceBus.controller;
 
 import com.example.ServiceBus.model.GithubPayload;
 import com.example.ServiceBus.model.WeatherForecast;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.azure.messaging.servicebus.*;
@@ -36,6 +37,13 @@ public class ServiceBusController {
                 .collect(Collectors.toList());
     }
 
+    @PostMapping("/webhook") // http://localhost:8080/api/webhook
+    public ResponseEntity<String> print(@RequestBody String requestBody) {
+        System.out.println("hello webhook");
+        System.out.println("###### Webhook #####" + requestBody);
+        return new ResponseEntity<String >(requestBody, HttpStatus.OK);
+
+    }
 
     @PostMapping("/SentToServiceBus")
     public ResponseEntity<String> sendToServiceBus(@RequestBody GithubPayload payload) {
