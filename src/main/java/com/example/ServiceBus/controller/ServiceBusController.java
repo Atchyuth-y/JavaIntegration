@@ -52,11 +52,11 @@ public class ServiceBusController {
             JsonNode jsonData = objectMapper.readTree(String.valueOf(payload));
             String commitId = jsonData.get("after").asText();
 
-            String connectionString = "Endpoint=sb://javaservicebus.servicebus.windows.net/;SharedAccessKeyName=javapolicy;SharedAccessKey=F+6TRz+9Vs/eTECSPYNdOHwNN6QCOAVVX+ASbBiyIo4=;EntityPath=javaqueue";
+            String connectionString = "Endpoint=sb://javaservicebus.servicebus.windows.net/;SharedAccessKeyName=javatopicpolicy;SharedAccessKey=Kk/4YJT6N0le4iXkGcuh/cwpvwhqIdhef+ASbA8UurI=;EntityPath=japatopic";
             ServiceBusSenderClient senderClient = new ServiceBusClientBuilder()
                     .connectionString(connectionString)
                     .sender()
-                    .queueName("javaqueue")
+                    .topicName("japatopic")
                     .buildClient();
 
             ServiceBusMessage message = new ServiceBusMessage(String.valueOf(payload));
