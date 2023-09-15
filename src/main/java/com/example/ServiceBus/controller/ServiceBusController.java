@@ -62,7 +62,6 @@ public class ServiceBusController {
             ServiceBusMessage message = new ServiceBusMessage(String.valueOf(payload));
             message.setContentType("application/json");
 
-            System.out.println("Message");
             senderClient.sendMessage(message);
             senderClient.close();
 
