@@ -23,6 +23,8 @@ import java.util.stream.Collectors;
 @RequestMapping("/api")
 public class ServiceBusController {
 
+    String str = "vasu";
+
     private static final String[] Summaries = {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
     };
