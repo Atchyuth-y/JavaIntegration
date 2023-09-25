@@ -2,6 +2,8 @@ package com.example.ServiceBus.controller;
 
 import com.example.ServiceBus.model.GithubPayload;
 import com.example.ServiceBus.model.WeatherForecast;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,11 +15,14 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
+
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
 public class ServiceBusController {
+
+    Logger logger = LoggerFactory.getLogger(ServiceBusController.class);
 
     String str = "Sindhujha";
 
@@ -45,6 +50,7 @@ public class ServiceBusController {
 
     @PostMapping("/SentToServiceBus")
     public ResponseEntity<Map<String, String>> sendToServiceBus(@RequestBody GithubPayload payloadJson) {
+
         try {
             // Serialize the GithubPayload object to JSON
             ObjectMapper objectMapper = new ObjectMapper();
@@ -82,7 +88,7 @@ public class ServiceBusController {
             Map<String, String> response = new HashMap<>();
             response.put("message", "Data Sent To Topic");
 
-
+            logger.info("Received Payload: " + payloadJson);
 
             return ResponseEntity.ok(response);
         } catch (Exception ex) {
