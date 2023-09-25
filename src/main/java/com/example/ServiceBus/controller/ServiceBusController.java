@@ -48,11 +48,12 @@ public class ServiceBusController {
     }
 
     @PostMapping("/SentToServiceBus")
-
-    public ResponseEntity<String> sendToServiceBus(@RequestBody String payloadJson) {
+    public ResponseEntity<String> sendToServiceBus(@RequestBody GithubPayload payload) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            GithubPayload payload = objectMapper.readValue(payloadJson, GithubPayload.class);
+
+            // Convert the payload object back to JSON string
+            String payloadJson = objectMapper.writeValueAsString(payload);
 
 
 
@@ -64,19 +65,12 @@ public class ServiceBusController {
                     .buildClient();
 
 
-
-            // You can access payload properties like payload.getAfter() or payload.getAction() here
-
-
-
             ServiceBusMessage message = new ServiceBusMessage(payloadJson);
             message.setContentType("application/json");
 
 
-
             senderClient.sendMessage(message);
             senderClient.close();
-
 
 
             return ResponseEntity.ok("Data Sent To Topic");
