@@ -46,6 +46,12 @@ public class ServiceBusController {
     @PostMapping("/SentToServiceBus")
     public ResponseEntity<Map<String, String>> sendToServiceBus(@RequestBody GithubPayload payloadJson) {
         try {
+            // Serialize the GithubPayload object to JSON
+            ObjectMapper objectMapper = new ObjectMapper();
+            String payloadJsonString = objectMapper.writeValueAsString(payloadJson);
+
+
+
             // Your code for sending data to Azure Service Bus
             String connectionString = "Endpoint=sb://javaservicebus.servicebus.windows.net/;SharedAccessKeyName=javatopicpolicy;SharedAccessKey=Kk/4YJT6N0le4iXkGcuh/cwpvwhqIdhef+ASbA8UurI=;EntityPath=japatopic";
             ServiceBusSenderClient senderClient = new ServiceBusClientBuilder()
@@ -56,8 +62,8 @@ public class ServiceBusController {
 
 
 
-            // Create a ServiceBusMessage and set its content
-            ServiceBusMessage message = new ServiceBusMessage(String.valueOf(payloadJson));
+            // Create a ServiceBusMessage and set its content to the serialized JSON
+            ServiceBusMessage message = new ServiceBusMessage(payloadJsonString);
             message.setContentType("application/json");
 
 
@@ -89,7 +95,6 @@ public class ServiceBusController {
             return ResponseEntity.status(500).body(errorResponse);
         }
     }
-
 //    @PostMapping("/SentToServiceBus")
 //    public ResponseEntity<String> sendToServiceBus(@RequestBody GithubPayload payloadJson) {
 //        try {
