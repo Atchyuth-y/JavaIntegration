@@ -6,17 +6,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.azure.messaging.servicebus.*;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.DataInput;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @RestController
@@ -48,14 +46,14 @@ public class ServiceBusController {
     }
 
     @PostMapping("/SentToServiceBus")
-    public ResponseEntity<String> sendToServiceBus(@RequestBody String payloadJson) {
+    public ResponseEntity<String> sendToServiceBus(@RequestBody GithubPayload payloadJson) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
 
 
 
             // Deserialize the JSON payload into GithubPayload object
-            GithubPayload payload = objectMapper.readValue(payloadJson, GithubPayload.class);
+            GithubPayload payload = objectMapper.readValue((DataInput) payloadJson, GithubPayload.class);
 
 
 
@@ -72,7 +70,7 @@ public class ServiceBusController {
 
 
 
-            ServiceBusMessage message = new ServiceBusMessage(payloadJson);
+            ServiceBusMessage message = new ServiceBusMessage(objectMapper.writeValueAsString(payload));
             message.setContentType("application/json");
 
 
@@ -83,7 +81,7 @@ public class ServiceBusController {
 
 
             return ResponseEntity.ok("Data Sent To Topic");
-        } catch (IOException | ServiceBusException ex) {
+        } catch (IOException| ServiceBusException ex) {
             return ResponseEntity.ok(ex.toString());
         }
     }
