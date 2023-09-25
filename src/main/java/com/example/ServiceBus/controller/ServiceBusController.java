@@ -48,11 +48,12 @@ public class ServiceBusController {
     }
 
     @PostMapping("/SentToServiceBus")
-    public ResponseEntity<String> sendToServiceBus(@RequestBody GithubPayload payload) {
+    public ResponseEntity<String> sendToServiceBus(@RequestBody GithubPayload payload){
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode jsonData = objectMapper.readTree(String.valueOf(payload));
-            String commitId = jsonData.get("after").asText();
+            String payloadJson = objectMapper.writeValueAsString(payload);
+
+
 
             String connectionString = "Endpoint=sb://javaservicebus.servicebus.windows.net/;SharedAccessKeyName=javatopicpolicy;SharedAccessKey=Kk/4YJT6N0le4iXkGcuh/cwpvwhqIdhef+ASbA8UurI=;EntityPath=japatopic";
             ServiceBusSenderClient senderClient = new ServiceBusClientBuilder()
@@ -61,17 +62,55 @@ public class ServiceBusController {
                     .topicName("japatopic")
                     .buildClient();
 
-            ServiceBusMessage message = new ServiceBusMessage(String.valueOf(payload));
+
+
+            ServiceBusMessage message = new ServiceBusMessage(payloadJson);
             message.setContentType("application/json");
+
+
 
             senderClient.sendMessage(message);
             senderClient.close();
+
+
 
             return ResponseEntity.ok("Data Sent To Topic");
         } catch (IOException | ServiceBusException ex) {
             return ResponseEntity.ok(ex.toString());
         }
     }
+
+
+   // @PostMapping("/sentToServiceBus")
+
+//    public ResponseEntity<String> sentToServiceBus(@RequestBody GithubPayload payload) {
+//        // Your service bus logic here
+//        return ResponseEntity.ok("Data Sent To Topic");
+//    }
+//    public ResponseEntity<String> sendToServiceBus(@RequestBody GithubPayload payload) {
+//        try {
+//            ObjectMapper objectMapper = new ObjectMapper();
+//            JsonNode jsonData = objectMapper.readTree(String.valueOf(payload));
+//            String commitId = jsonData.get("after").asText();
+//
+//            String connectionString = "Endpoint=sb://javaservicebus.servicebus.windows.net/;SharedAccessKeyName=javatopicpolicy;SharedAccessKey=Kk/4YJT6N0le4iXkGcuh/cwpvwhqIdhef+ASbA8UurI=;EntityPath=japatopic";
+//            ServiceBusSenderClient senderClient = new ServiceBusClientBuilder()
+//                    .connectionString(connectionString)
+//                    .sender()
+//                    .topicName("japatopic")
+//                    .buildClient();
+//
+//            ServiceBusMessage message = new ServiceBusMessage(String.valueOf(payload));
+//            message.setContentType("application/json");
+//
+//            senderClient.sendMessage(message);
+//            senderClient.close();
+//
+//            return ResponseEntity.ok("Data Sent To Topic");
+//        } catch (IOException | ServiceBusException ex) {
+//            return ResponseEntity.ok(ex.toString());
+//        }
+//    }
 
     @PostMapping("/post")
     public ResponseEntity<List<WeatherForecast>> createPost(@RequestBody WeatherForecast weatherForecast) {
