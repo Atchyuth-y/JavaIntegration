@@ -11,9 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.DataInput;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
@@ -46,17 +44,9 @@ public class ServiceBusController {
     }
 
     @PostMapping("/SentToServiceBus")
-    public ResponseEntity<String> sendToServiceBus(@RequestBody GithubPayload payloadJson) {
+    public ResponseEntity<Map<String, String>> sendToServiceBus(@RequestBody GithubPayload payloadJson) {
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
-
-
-
-            // Deserialize the JSON payload into GithubPayload object
-            GithubPayload payload = objectMapper.readValue((DataInput) payloadJson, GithubPayload.class);
-
-
-
+            // Your code for sending data to Azure Service Bus
             String connectionString = "Endpoint=sb://javaservicebus.servicebus.windows.net/;SharedAccessKeyName=javatopicpolicy;SharedAccessKey=Kk/4YJT6N0le4iXkGcuh/cwpvwhqIdhef+ASbA8UurI=;EntityPath=japatopic";
             ServiceBusSenderClient senderClient = new ServiceBusClientBuilder()
                     .connectionString(connectionString)
@@ -66,25 +56,80 @@ public class ServiceBusController {
 
 
 
-            // You can access payload properties like payload.getAfter() or payload.getAction() here
-
-
-
-            ServiceBusMessage message = new ServiceBusMessage(objectMapper.writeValueAsString(payload));
+            // Create a ServiceBusMessage and set its content
+            ServiceBusMessage message = new ServiceBusMessage(String.valueOf(payloadJson));
             message.setContentType("application/json");
 
 
 
+            // Send the message
             senderClient.sendMessage(message);
+
+
+
+            // Close the sender client
             senderClient.close();
 
 
 
-            return ResponseEntity.ok("Data Sent To Topic");
-        } catch (IOException| ServiceBusException ex) {
-            return ResponseEntity.ok(ex.toString());
+            // Create a JSON response
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Data Sent To Topic");
+
+
+
+            return ResponseEntity.ok(response);
+        } catch (Exception ex) {
+            // Handle the error and return an error response
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", "An error occurred: " + ex.getMessage());
+
+
+
+            return ResponseEntity.status(500).body(errorResponse);
         }
     }
+
+//    @PostMapping("/SentToServiceBus")
+//    public ResponseEntity<String> sendToServiceBus(@RequestBody GithubPayload payloadJson) {
+//        try {
+//            ObjectMapper objectMapper = new ObjectMapper();
+//
+//
+//
+//            // Deserialize the JSON payload into GithubPayload object
+//          //  GithubPayload payload = objectMapper.readValue((DataInput) payloadJson, GithubPayload.class);
+//
+//
+//
+//            String connectionString = "Endpoint=sb://javaservicebus.servicebus.windows.net/;SharedAccessKeyName=javatopicpolicy;SharedAccessKey=Kk/4YJT6N0le4iXkGcuh/cwpvwhqIdhef+ASbA8UurI=;EntityPath=japatopic";
+//            ServiceBusSenderClient senderClient = new ServiceBusClientBuilder()
+//                    .connectionString(connectionString)
+//                    .sender()
+//                    .topicName("japatopic")
+//                    .buildClient();
+//
+//
+//
+//            // You can access payload properties like payload.getAfter() or payload.getAction() here
+//
+//
+//
+//            ServiceBusMessage message = new ServiceBusMessage(objectMapper.writeValueAsString(payload));
+//            message.setContentType("application/json");
+//
+//
+//
+//            senderClient.sendMessage(message);
+//            senderClient.close();
+//
+//
+//
+//            return ResponseEntity.ok("Data Sent To Topic");
+//        } catch (IOException| ServiceBusException ex) {
+//            return ResponseEntity.ok(ex.toString());
+//        }
+//    }
 
 
 //    @PostMapping("/SentToServiceBus")
