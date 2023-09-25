@@ -1,5 +1,8 @@
 package com.example.ServiceBus.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class GithubPayload {
     private String name;
     private String before;
@@ -47,6 +50,23 @@ public class GithubPayload {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    @JsonCreator
+    public GithubPayload(
+            @JsonProperty("name") String name,
+            @JsonProperty("before") String before,
+            @JsonProperty("after") String after,
+            @JsonProperty("action") String action,
+            @JsonProperty("id") String id) {
+        this.name = name;
+        this.before = before;
+        this.after = after;
+        this.action = action;
+        this.id = id;
+    }
+
+    public GithubPayload() {
     }
 }
 
