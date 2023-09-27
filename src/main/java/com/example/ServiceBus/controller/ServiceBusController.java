@@ -59,11 +59,11 @@ public class ServiceBusController {
 
 
             // Your code for sending data to Azure Service Bus
-            String connectionString = "Endpoint=sb://javaservicebus.servicebus.windows.net/;SharedAccessKeyName=javatopicpolicy;SharedAccessKey=Kk/4YJT6N0le4iXkGcuh/cwpvwhqIdhef+ASbA8UurI=;EntityPath=japatopic";
+            String connectionString = "Endpoint=sb://javaservicebus.servicebus.windows.net/;SharedAccessKeyName=javaqueuepolicy;SharedAccessKey=Q5VJN3BXXXc5ZICuMw6uw+mlXyR7z45w9+ASbHCfMIo=;EntityPath=javaqueue";
             ServiceBusSenderClient senderClient = new ServiceBusClientBuilder()
                     .connectionString(connectionString)
                     .sender()
-                    .topicName("japatopic")
+                    .queueName("javaqueue")
                     .buildClient();
 
 
