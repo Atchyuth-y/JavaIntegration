@@ -24,7 +24,7 @@ public class ServiceBusController {
 
     Logger logger = LoggerFactory.getLogger(ServiceBusController.class);
 
-    String str = "Sindhujha";
+    //String str = "Sindhujha";
 
     private static final String[] Summaries = {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
