@@ -21,8 +21,8 @@ public class GithubPayloadService {
 //    }
 
 
-    String connectionString = "Endpoint=sb://javaservicebus.servicebus.windows.net/;SharedAccessKeyName=javaqueuepolicy;SharedAccessKey=Q5VJN3BXXXc5ZICuMw6uw+mlXyR7z45w9+ASbHCfMIo=;EntityPath=javaqueue";
-    String queueName = "javaqueue";
+    static String connectionString = "Endpoint=sb://javaservicebus.servicebus.windows.net/;SharedAccessKeyName=javaqueuepolicy;SharedAccessKey=Q5VJN3BXXXc5ZICuMw6uw+mlXyR7z45w9+ASbHCfMIo=;EntityPath=javaqueue";
+    static String queueName = "javaqueue";
 
     public ResponseEntity<String> sendPayloadToServiceBus(GithubPayload payload) {
         try {
@@ -32,7 +32,7 @@ public class GithubPayloadService {
         }
     }
 
-    public void sendMessage() {
+    public static void sendMessage() {
         ServiceBusSenderClient senderClient = new ServiceBusClientBuilder()
                 .connectionString(connectionString)
                 .sender()

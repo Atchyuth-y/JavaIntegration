@@ -92,7 +92,7 @@ public class ServiceBusController {
 
             // Create a JSON response
             Map<String, String> response = new HashMap<>();
-            response.put("message", "Data Sent To Topic");
+            response.put("message", "Data Sent To Queue");
 
             logger.info("Received Payload: " + payloadJson);
 
