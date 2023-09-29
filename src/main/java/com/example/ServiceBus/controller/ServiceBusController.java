@@ -3,6 +3,7 @@ package com.example.ServiceBus.controller;
 import com.example.ServiceBus.model.GithubPayload;
 import com.example.ServiceBus.model.WeatherForecast;
 import com.example.ServiceBus.service.GithubPayloadService;
+import com.example.ServiceBus.service.ReceiverService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +25,12 @@ import java.util.stream.Collectors;
 @RequestMapping("/api")
 public class ServiceBusController {
 
-    String str = "deva";
+
     @Autowired
     GithubPayloadService githubPayloadService;
+
+    @Autowired
+    ReceiverService receiverService;
 
     Logger logger = LoggerFactory.getLogger(ServiceBusController.class);
 
@@ -106,6 +110,11 @@ public class ServiceBusController {
 
             return ResponseEntity.status(500).body(errorResponse);
         }
+    }
+
+    @GetMapping("/receive")
+    public void receiveMessage(){
+        receiverService.receiveMessage();
     }
 
     @PostMapping("/post")
