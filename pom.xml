@@ -30,6 +30,13 @@
 		</dependency>
 
 
+<!--		<dependency>-->
+<!--			<groupId>org.springdoc</groupId>-->
+<!--			<artifactId>springdoc-openapi-ui</artifactId>-->
+<!--			<version>1.5.12</version> &lt;!&ndash; Replace with the latest version &ndash;&gt;-->
+<!--		</dependency>-->
+
+
 
 		<dependency>
 			<groupId>com.azure</groupId>
