@@ -59,57 +59,8 @@ public class ServiceBusController {
     }
 
     @PostMapping("/SentToServiceBus")
-    public ResponseEntity<Map<String, String>> sendToServiceBus(@RequestBody GithubPayload payloadJson) {
-
-        try {
-            // Serialize the GithubPayload object to JSON
-            ObjectMapper objectMapper = new ObjectMapper();
-            String payloadJsonString = objectMapper.writeValueAsString(payloadJson);
-
-
-
-            // Your code for sending data to Azure Service Bus
-            String connectionString = "Endpoint=sb://javaservicebus.servicebus.windows.net/;SharedAccessKeyName=javaqueuepolicy;SharedAccessKey=Q5VJN3BXXXc5ZICuMw6uw+mlXyR7z45w9+ASbHCfMIo=;EntityPath=javaqueue";
-            ServiceBusSenderClient senderClient = new ServiceBusClientBuilder()
-                    .connectionString(connectionString)
-                    .sender()
-                    .queueName("javaqueue")
-                    .buildClient();
-
-
-
-            // Create a ServiceBusMessage and set its content to the serialized JSON
-            ServiceBusMessage message = new ServiceBusMessage(payloadJsonString);
-            message.setContentType("application/json");
-
-
-
-            // Send the message
-            senderClient.sendMessage(message);
-
-
-
-            // Close the sender client
-            senderClient.close();
-
-
-
-            // Create a JSON response
-            Map<String, String> response = new HashMap<>();
-            response.put("message", "Data Sent To Queue");
-
-            logger.info("Received Payload: " + payloadJson);
-
-            return ResponseEntity.ok(response);
-        } catch (Exception ex) {
-            // Handle the error and return an error response
-            Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("error", "An error occurred: " + ex.getMessage());
-
-
-
-            return ResponseEntity.status(500).body(errorResponse);
-        }
+    public ResponseEntity<String> sendToServiceBus(@RequestBody GithubPayload payload) {
+        return githubPayloadService.sendPayloadToServiceBus(payload);
     }
 
     @GetMapping("/receive")
