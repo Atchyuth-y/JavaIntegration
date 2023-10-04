@@ -6,10 +6,8 @@ import com.azure.messaging.servicebus.ServiceBusSenderClient;
 import com.example.ServiceBus.model.GithubPayload;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 @Service
 public class GithubPayloadService {
